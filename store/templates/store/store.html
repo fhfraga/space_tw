@@ -1,0 +1,28 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center" style="font-family: 'Times New Roman', Times, serif;">Ofertas Especiais de Salas para Alugar</h1>
+    <div class="row">
+        {% for product in products %}
+        {% if product.on_sale %}
+        <div class="col-lg-4">
+            <img class="thumbnail" src="{{product.imageURL}}">
+            <div class="box-element product">
+                <h6><strong>{{product.name}}</strong></h6>
+                <hr>
+
+                <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Alugar</button>
+                
+                <a class="btn btn-outline-success" href="{{product.link}}">Sobre</a>
+                <h4 style="display: inline-block; float: right;"><strong>R${{product.price}}/h</strong></h4>
+                <p><span class="badge">{{product.space_type}}</span></p>
+                <p><span class="badge badge-danger">Oferta</span></p> 
+
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

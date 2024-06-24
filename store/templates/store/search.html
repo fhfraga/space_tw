@@ -1,0 +1,35 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+        {% if query %}
+    <h1 class="text-center" style="font-family: 'Times New Roman', Times, serif;">Resultados para "{{ query }}"</h1>
+        {% for product in results %}
+            <div class="col-lg-4">
+                <img class="thumbnail" src="{{product.imageURL}}">
+                <div class="box-element product">
+                    <h6><strong>{{product.name}}</strong></h6>
+                    <hr>
+    
+                    <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Alugar</button>
+                    
+                    <a class="btn btn-outline-success" href="{{product.link}}">Sobre</a>
+                    <h4 style="display: inline-block; float: right;"><strong>R${{product.price}}/h</strong></h4>
+                    <p><span class="badge">{{product.space_type}}</span></p>
+    
+                    {% if product.on_sale %}
+                    <p><span class="badge badge-danger">Oferta</span></p> <!-- Indicação visual de que está em oferta -->
+                    {% endif %}
+    
+                </div>
+            </div>
+        {% empty %}
+            Nenhum produto encontrado.
+        {% endfor %}
+
+{% else %}
+    <p>Nenhum termo de pesquisa foi fornecido.</p>
+{% endif %}
+    </div>
+</div>
+{% endblock content %}
