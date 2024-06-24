@@ -1,7 +1,7 @@
 import datetime
 import json
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -153,3 +153,24 @@ def privacy_policy(request):
 
 def terms_of_service(request):
     return render(request, 'store/terms_of_service.html')
+
+def store_index(request):
+	if request.user.is_authenticated:
+		return render(request, template_name='store.html')
+	else:
+		return redirect('store_login')
+
+
+def store_login(request):
+	if request.method == 'POST':
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+		user = authenticate(request, username=username, password=password)
+		if user is not None:
+			login(request, user)
+			return redirect('store')
+	return render(request, template_name='store/login.html')
+	
+def store_logout(request):
+	logout(request)
+	return redirect('store_login')
