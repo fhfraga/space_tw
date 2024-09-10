@@ -13,12 +13,17 @@
                 <hr>
 
                 <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Alugar</button>
-                
                 <a class="btn btn-outline-success" href="{{product.link}}">Sobre</a>
+                
                 <h4 style="display: inline-block; float: right;"><strong>R${{product.price}}/h</strong></h4>
-                <p><span class="badge">{{product.space_type}}</span></p>
-                <p><span class="badge badge-danger">Oferta</span></p> 
 
+                <p><span class="badge">{{product.get_space_type_display}}</span></p>
+                
+                {% if product.features %}
+                <p><strong>Características:</strong> {{product.features}}</p>
+                {% endif %}
+
+                <p><span class="badge badge-danger">Oferta</span></p> 
             </div>
         </div>
         {% endif %}

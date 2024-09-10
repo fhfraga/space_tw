@@ -2,34 +2,43 @@
 {% load static %}
 {% block content %}
 <div class="container">
-        {% if query %}
+    {% if query %}
     <h1 class="text-center" style="font-family: 'Times New Roman', Times, serif;">Resultados para "{{ query }}"</h1>
+    <div class="row">
         {% for product in results %}
-            <div class="col-lg-4">
-                <img class="thumbnail" src="{{product.imageURL}}">
-                <div class="box-element product">
-                    <h6><strong>{{product.name}}</strong></h6>
-                    <hr>
-    
-                    <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Alugar</button>
-                    
-                    <a class="btn btn-outline-success" href="{{product.link}}">Sobre</a>
-                    <h4 style="display: inline-block; float: right;"><strong>R${{product.price}}/h</strong></h4>
-                    <p><span class="badge">{{product.space_type}}</span></p>
-    
-                    {% if product.on_sale %}
-                    <p><span class="badge badge-danger">Oferta</span></p> <!-- Indicação visual de que está em oferta -->
-                    {% endif %}
-    
-                </div>
-            </div>
-        {% empty %}
-            Nenhum produto encontrado.
-        {% endfor %}
+        <div class="col-lg-4">
+            <img class="thumbnail" src="{{product.imageURL}}">
+            <div class="box-element product">
+                <h6><strong>{{product.name}}</strong></h6>
+                <hr>
 
-{% else %}
-    <p>Nenhum termo de pesquisa foi fornecido.</p>
-{% endif %}
+                <!-- Botões de ação -->
+                <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Alugar</button>
+                <a class="btn btn-outline-success" href="{{product.link}}">Sobre</a>
+
+                <!-- Preço -->
+                <h4 style="display: inline-block; float: right;"><strong>R${{product.price}}/h</strong></h4>
+
+                <!-- Tipo de espaço -->
+                <p><span class="badge">{{product.get_space_type_display}}</span></p>
+
+                <!-- Características da sala -->
+                {% if product.features %}
+                <p><strong>Características:</strong> {{product.features}}</p>
+                {% endif %}
+
+                <!-- Indicação visual de que está em oferta -->
+                {% if product.on_sale %}
+                <p><span class="badge badge-danger">Oferta</span></p>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p>Nenhum produto encontrado.</p>
+        {% endfor %}
     </div>
+    {% else %}
+    <p>Nenhum termo de pesquisa foi fornecido.</p>
+    {% endif %}
 </div>
 {% endblock content %}

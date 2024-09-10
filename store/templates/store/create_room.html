@@ -1,0 +1,18 @@
+{% extends 'store/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center" style="font-family: 'Times New Roman', Times, serif;">Criar Nova Sala</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <button type="submit" class="btn btn-primary btn-block">Criar Sala</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

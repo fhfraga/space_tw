@@ -18,15 +18,15 @@ class Product(models.Model):
     image = models.ImageField(null=True, blank=True)
     link = models.CharField(max_length=200, null=True)
     on_sale = models.BooleanField(default=False)
-    
+
     SPACE_TYPES = [
         ('compartilhado', 'Espaço Compartilhado'),
         ('escritorio', 'Escritório'),
         ('auditorio', 'Auditório'),
     ]
     space_type = models.CharField(max_length=20, choices=SPACE_TYPES, default='escritorio')
+    features = models.CharField(max_length=255, default='Nenhuma', blank=True)
 	
-
 
     def __str__(self):
         return self.name

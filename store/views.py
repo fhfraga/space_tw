@@ -2,11 +2,14 @@ import datetime
 import json
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
+from .forms import ProductForm
 from .models import *
 from .utils import (cartData, cookieCart, guestOrder, is_valid_card_number,
                     is_valid_cvv)
@@ -121,11 +124,33 @@ def auditorium_spaces(request):
     auditorium_products = Product.objects.filter(space_type='auditorio')
     return render(request, 'store/auditorium_spaces.html', {'auditorium_products': auditorium_products})
 
+# def search_results(request):
+#     query = request.GET.get('query')
+
+#     if query:
+#         results = Product.objects.filter(name__icontains=query)
+#     else:
+#         results = Product.objects.none()
+
+#     context = {
+#         'query': query,
+#         'results': results,
+#     }
+#     return render(request, 'store/search.html', context)
+
+
+
+
 def search_results(request):
     query = request.GET.get('query')
 
     if query:
-        results = Product.objects.filter(name__icontains=query)
+        # Busca no nome, características e tipo de espaço
+        results = Product.objects.filter(
+            Q(name__icontains=query) | 
+            Q(features__icontains=query) | 
+            Q(space_type__icontains=query)
+        )
     else:
         results = Product.objects.none()
 
@@ -134,6 +159,7 @@ def search_results(request):
         'results': results,
     }
     return render(request, 'store/search.html', context)
+
 
 def validar_transacao(request):
     if request.method == 'POST':
@@ -174,3 +200,18 @@ def store_login(request):
 def store_logout(request):
 	logout(request)
 	return redirect('store_login')
+
+
+@login_required
+def create_room(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.save()
+            return redirect('store')  # Redireciona para a página inicial ou outra página após criar a sala
+    else:
+        form = ProductForm()
+
+    context = {'form': form}
+    return render(request, 'store/create_room.html', context)
