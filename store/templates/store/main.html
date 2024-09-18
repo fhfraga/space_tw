@@ -1,152 +1,17 @@
 <!DOCTYPE html>
 {% load static %}
 <html>
-<head>
-	<title>SpaceTW</title>
+	<head>
+		{% include 'store/partials/head.html' %}
+	</head>
+	<body>
+		{% include 'store/partials/header.html' %}
+		<div class="container">
+				<br>
+				{% block content %}
 
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
-
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-
-	<script type="text/javascript">
-		var user = '{{request.user}}'
-
-		function getToken(name) {
-		    var cookieValue = null;
-		    if (document.cookie && document.cookie !== '') {
-		        var cookies = document.cookie.split(';');
-		        for (var i = 0; i < cookies.length; i++) {
-		            var cookie = cookies[i].trim();
-		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-		                break;
-		            }
-		        }
-		    }
-		    return cookieValue;
-		}
-		var csrftoken = getToken('csrftoken')
-
-		function getCookie(name) {
-		    var cookieArr = document.cookie.split(";");
-
-		    for(var i = 0; i < cookieArr.length; i++) {
-		        var cookiePair = cookieArr[i].split("=");
-
-		        if(name == cookiePair[0].trim()) {
-		            return decodeURIComponent(cookiePair[1]);
-		        }
-		    }
-
-		    return null;
-		}
-		var cart = JSON.parse(getCookie('cart'))
-
-		if (cart == undefined){
-			cart = {}
-			console.log('Cart Created!', cart)
-			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
-		}
-		console.log('Cart:', cart)
-	
-	</script>
-
-</head>
-<body>
-
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	  <div class="logo">
-	  <a class="navbar-brand" href="{% url 'store' %}"><img src="{% static 'images/logo.svg' %}" alt=""></a>
-	  </div>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
-	  </button>
-
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-		<div class="seach_bar">
-			<form method="GET" action="{% url 'search_results' %}">
-				<div class="barra">
-					<input type="text" name="query" placeholder="O que você procura?">
-				</div>
-				<div class="lupa">
-					<button type="submit">
-						<img src="{% static 'images/lupa.svg' %}" alt="">
-					</button>
-				</div>
-			</form>
+				{% endblock content %}
 		</div>
-	
-		<div class="categoria">
-			<div class="imagem_categoria">
-				<figure>
-					<a href="{% url 'shared_space' %}"><img src="{% static 'images/coworking.svg' %}" alt=""><h6>ESPAÇOS<br>COMPARTILHADOS</h6></a>
-				</figure>
-				<figure>
-					<a href="{% url 'auditorium_spaces' %}"><img src="{% static 'images/cinema.svg' %}" alt=""><h6>AUDITÓRIOS</h6></a>
-				</figure>
-				<figure>
-					<a href="{% url 'office_spaces' %}"><img src="{% static 'images/trabalhador.svg' %}" alt=""><h6>ESCRITÓRIOS</h6></a>
-				</figure>
-				<figure>
-					<a href="{% url 'store' %}"><img src="{% static 'images/promotion.svg' %}" alt=""><h6>OFERTAS</h6></a>
-				</figure>
-				<figure></figure>
-					<a href="{% url 'about' %}"><img src="{% static 'images/about.svg' %}" alt=""><h6>SOBRE</h6></a>
-				</figure>
-				<figure></figure>
-					{% if request.user.is_authenticated %}
-					<a href="{% url 'create_room' %}">
-						<img src="{% static 'images/house-add.svg' %}" alt="">
-						<h6>ADICIONAR ESPAÇO</h6>
-					</a>
-					{% endif %}
-				</figure>
-				
-			</div>
-		</div>
-
-	  </div>
-
-	  <div class="form-inline my-2 my-lg-0">
-		{% if request.user.is_authenticated %}
-			<p class="text-white">Bem-vindo, {{ request.user.username }}!</p>
-			<a href="{% url 'store_logout' %}" class="btn btn-warning">Logout</a>
-		{% else %}
-			<a href="{% url 'store_login' %}" class="btn btn-warning">Login</a>
-		{% endif %}
-		
-		<a href="{% url 'cart' %}">
-		   <img  id="cart-icon" src="{% static 'images/cart.png' %}">
-	   </a>
-	   <p id="cart-total">{{cartItems}}</p>
-
-   </div>
-	 
-
-	</nav>
-
-    <div class="container">
-            <br>
-            {% block content %}
-
-
-            {% endblock content %}
-    </div>
-
-	<footer class="bg-dark mt-5 p-4 text-center" style="color: white;">
-		<p><h6>&copy; 2024 SpaceTW. Todos os direitos reservados.</h6></p>
-		<p><a href="{% url 'privacy_policy' %}" style="color: white;">Política de Privacidade</a> | <a href="{% url 'terms_of_service' %}" style="color: white;">Termos de Serviço</a></p>
-	</footer>
-
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
-	<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
-</body>
+		{% include 'store/partials/footer.html' %}
+	</body>
 </html>
