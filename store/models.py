@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-# Create your models here.
 
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
@@ -9,7 +8,8 @@ class Customer(models.Model):
 	email = models.CharField(max_length=200)
 
 	def __str__(self):
-		return self.name
+		return self.name if self.name else "No Name"
+
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
@@ -26,7 +26,6 @@ class Product(models.Model):
     ]
     space_type = models.CharField(max_length=20, choices=SPACE_TYPES, default='escritorio')
     features = models.CharField(max_length=255, default='Nenhuma', blank=True)
-	
 
     def __str__(self):
         return self.name
@@ -70,6 +69,7 @@ class Order(models.Model):
 		total = sum([item.quantity for item in orderitems])
 		return total 
 
+
 class OrderItem(models.Model):
 	product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
 	order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
@@ -80,6 +80,7 @@ class OrderItem(models.Model):
 	def get_total(self):
 		total = self.product.price * self.quantity
 		return total
+
 
 class ShippingAddress(models.Model):
 	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)

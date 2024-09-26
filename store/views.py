@@ -19,15 +19,23 @@ def store(request):
     products = Product.objects.filter(on_sale=True)
     return render(request, 'store/store.html', {'products': products})
 
+
 def cart(request):
-	data = cartData(request)
+    if request.user.is_authenticated:
+        try:
+            customer = request.user.customer
+        except Customer.DoesNotExist:
+            customer = Customer.objects.create(user=request.user)
 
-	cartItems = data['cartItems']
-	order = data['order']
-	items = data['items']
+    data = cartData(request)
 
-	context = {'items':items, 'order':order, 'cartItems':cartItems}
-	return render(request, 'store/cart.html', context)
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
+
+    context = {'items': items, 'order': order, 'cartItems': cartItems}
+    return render(request, 'store/cart.html', context)
+
 
 def checkout(request):
 	data = cartData(request)
@@ -38,6 +46,7 @@ def checkout(request):
 
 	context = {'items':items, 'order':order, 'cartItems':cartItems}
 	return render(request, 'store/checkout.html', context)
+
 
 def updateItem(request):
 	data = json.loads(request.body)
@@ -63,6 +72,7 @@ def updateItem(request):
 		orderItem.delete()
 
 	return JsonResponse('Item was added', safe=False)
+
 
 def processOrder(request):
 	transaction_id = datetime.datetime.now().timestamp()
@@ -97,28 +107,36 @@ def processOrder(request):
 def about(request):
     return render(request, 'store/about.html') 
 
+
 def sala_aracatiba(request):
     return render(request, 'store/rooms/sala_1.html')  
+
 
 def sala_centro(request):
     return render(request, 'store/rooms/sala_2.html')  
 
+
 def sala_itapeba(request):
     return render(request, 'store/rooms/sala_3.html')  
+
 
 def auditorio_inoa(request):
     return render(request, 'store/rooms/auditorio_1.html')  
 
+
 def finish(request):
     return render(request, 'store/finish.html')  
+
 
 def shared_space(request):
     shared_space_products = Product.objects.filter(space_type='compartilhado')
     return render(request, 'store/shared_space.html', {'shared_space_products': shared_space_products})
 
+
 def office_spaces(request):
     office_products = Product.objects.filter(space_type='escritorio')
     return render(request, 'store/office_spaces.html', {'office_products': office_products})
+
 
 def auditorium_spaces(request):
     auditorium_products = Product.objects.filter(space_type='auditorio')
