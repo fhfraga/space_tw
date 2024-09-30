@@ -23,11 +23,60 @@
                 <p><strong>Características:</strong> {{product.features}}</p>
                 {% endif %}
 
-                <p><span class="badge badge-danger">Oferta</span></p> 
+                <p><span class="badge badge-danger">Em oferta</span></p>
+                
+                {# Exibindo as datas de disponibilidade #}
+                {% if product.available_from and product.available_to %}
+                <p><strong>Disponível de:</strong> {{ product.available_from|date:"d/m/Y" }} <strong>até:</strong> {{ product.available_to|date:"d/m/Y" }}</p>
+                {% else %}
+                <p><strong>Disponibilidade não definida.</strong></p>
+                {% endif %}
             </div>
         </div>
         {% endif %}
         {% endfor %}
     </div>
 </div>
+
+<script>
+    var updateBtns = document.getElementsByClassName('update-cart')
+
+    for (var i = 0; i < updateBtns.length; i++) {
+        updateBtns[i].addEventListener('click', function() {
+            var productId = this.dataset.product
+            var action = this.dataset.action
+
+            if (user == 'AnonymousUser') {
+                alert('Você precisa estar logado para alugar uma sala.')
+                window.location.href = 'login'
+            } else {
+                addProductToCart(productId)
+            }
+        })
+    }
+
+    function addProductToCart(productId) {
+        var url = '/add_to_cart/'
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({'productId': productId}),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'added') {
+                alert(data.message)
+                // Atualizar o contador do carrinho, se necessário
+            } else if (data.status === 'exists') {
+                alert(data.message)
+            } else if (data.status === 'not_authenticated') {
+                window.location.href = '/login/'
+            }
+        })
+    }
+</script>
 {% endblock content %}
