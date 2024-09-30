@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import ProductForm
@@ -14,9 +15,15 @@ from .models import *
 from .utils import (cartData, cookieCart, guestOrder, is_valid_card_number,
                     is_valid_cvv)
 
+# def store(request):
+#     products = Product.objects.filter(on_sale=True)
+#     return render(request, 'store/store.html', {'products': products})
+
+today = timezone.now().date()  # Obtém a data atual
 
 def store(request):
-    products = Product.objects.filter(on_sale=True)
+    #today = timezone.now().date()  # Obtém a data atual
+    products = Product.objects.filter(on_sale=True, available_from__lte=today, available_to__gte=today)
     return render(request, 'store/store.html', {'products': products})
 
 def cart(request):
@@ -39,30 +46,59 @@ def checkout(request):
 	context = {'items':items, 'order':order, 'cartItems':cartItems}
 	return render(request, 'store/checkout.html', context)
 
+# def updateItem(request):
+# 	data = json.loads(request.body)
+# 	productId = data['productId']
+# 	action = data['action']
+# 	print('Action:', action)
+# 	print('Product:', productId)
+
+# 	customer = request.user.customer
+# 	product = Product.objects.get(id=productId)
+# 	order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+# 	orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+
+# 	if action == 'add':
+# 		orderItem.quantity = (orderItem.quantity + 1)
+# 	elif action == 'remove':
+# 		orderItem.quantity = (orderItem.quantity - 1)
+
+# 	orderItem.save()
+
+# 	if orderItem.quantity <= 0:
+# 		orderItem.delete()
+
+# 	return JsonResponse('Item was added', safe=False)
+
 def updateItem(request):
-	data = json.loads(request.body)
-	productId = data['productId']
-	action = data['action']
-	print('Action:', action)
-	print('Product:', productId)
+    data = json.loads(request.body)
+    productId = data['productId']
+    action = data['action']
+    print('Action:', action)
+    print('Product:', productId)
 
-	customer = request.user.customer
-	product = Product.objects.get(id=productId)
-	order, created = Order.objects.get_or_create(customer=customer, complete=False)
+    customer = request.user.customer
+    product = Product.objects.get(id=productId)
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
-	orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+    # Verifique se o produto já está no carrinho
+    orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
-	if action == 'add':
-		orderItem.quantity = (orderItem.quantity + 1)
-	elif action == 'remove':
-		orderItem.quantity = (orderItem.quantity - 1)
+    if action == 'add':
+        if orderItem.quantity > 0:
+            return JsonResponse({'status': 'exists', 'message': 'Este produto já está no carrinho.'}, safe=False)
+        orderItem.quantity = (orderItem.quantity + 1)
+    elif action == 'remove':
+        orderItem.quantity = (orderItem.quantity - 1)
 
-	orderItem.save()
+    orderItem.save()
 
-	if orderItem.quantity <= 0:
-		orderItem.delete()
+    if orderItem.quantity <= 0:
+        orderItem.delete()
 
-	return JsonResponse('Item was added', safe=False)
+    return JsonResponse({'status': 'added', 'message': 'Produto adicionado ao carrinho.'}, safe=False)
+
 
 def processOrder(request):
 	transaction_id = datetime.datetime.now().timestamp()
@@ -113,33 +149,16 @@ def finish(request):
     return render(request, 'store/finish.html')  
 
 def shared_space(request):
-    shared_space_products = Product.objects.filter(space_type='compartilhado')
+    shared_space_products = Product.objects.filter(space_type='compartilhado', available_from__lte=today, available_to__gte=today)
     return render(request, 'store/shared_space.html', {'shared_space_products': shared_space_products})
 
 def office_spaces(request):
-    office_products = Product.objects.filter(space_type='escritorio')
+    office_products = Product.objects.filter(space_type='escritorio', available_from__lte=today, available_to__gte=today)
     return render(request, 'store/office_spaces.html', {'office_products': office_products})
 
 def auditorium_spaces(request):
-    auditorium_products = Product.objects.filter(space_type='auditorio')
+    auditorium_products = Product.objects.filter(space_type='auditorio', available_from__lte=today, available_to__gte=today)
     return render(request, 'store/auditorium_spaces.html', {'auditorium_products': auditorium_products})
-
-# def search_results(request):
-#     query = request.GET.get('query')
-
-#     if query:
-#         results = Product.objects.filter(name__icontains=query)
-#     else:
-#         results = Product.objects.none()
-
-#     context = {
-#         'query': query,
-#         'results': results,
-#     }
-#     return render(request, 'store/search.html', context)
-
-
-
 
 def search_results(request):
     query = request.GET.get('query')
