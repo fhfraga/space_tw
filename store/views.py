@@ -15,10 +15,6 @@ from .models import *
 from .utils import (cartData, cookieCart, guestOrder, is_valid_card_number,
                     is_valid_cvv)
 
-# def store(request):
-#     products = Product.objects.filter(on_sale=True)
-#     return render(request, 'store/store.html', {'products': products})
-
 today = timezone.now().date()  # Obtém a data atual
 
 def store(request):
@@ -46,30 +42,6 @@ def checkout(request):
 	context = {'items':items, 'order':order, 'cartItems':cartItems}
 	return render(request, 'store/checkout.html', context)
 
-# def updateItem(request):
-# 	data = json.loads(request.body)
-# 	productId = data['productId']
-# 	action = data['action']
-# 	print('Action:', action)
-# 	print('Product:', productId)
-
-# 	customer = request.user.customer
-# 	product = Product.objects.get(id=productId)
-# 	order, created = Order.objects.get_or_create(customer=customer, complete=False)
-
-# 	orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
-
-# 	if action == 'add':
-# 		orderItem.quantity = (orderItem.quantity + 1)
-# 	elif action == 'remove':
-# 		orderItem.quantity = (orderItem.quantity - 1)
-
-# 	orderItem.save()
-
-# 	if orderItem.quantity <= 0:
-# 		orderItem.delete()
-
-# 	return JsonResponse('Item was added', safe=False)
 
 def updateItem(request):
     data = json.loads(request.body)
@@ -129,7 +101,6 @@ def processOrder(request):
 
 	return JsonResponse('Payment submitted..', safe=False)
 
-
 def about(request):
     return render(request, 'store/about.html') 
 
@@ -164,7 +135,6 @@ def search_results(request):
     query = request.GET.get('query')
 
     if query:
-        # Busca no nome, características e tipo de espaço
         results = Product.objects.filter(
             Q(name__icontains=query) | 
             Q(features__icontains=query) | 
@@ -228,7 +198,7 @@ def create_room(request):
         if form.is_valid():
             product = form.save(commit=False)
             product.save()
-            return redirect('store')  # Redireciona para a página inicial ou outra página após criar a sala
+            return redirect('store') 
     else:
         form = ProductForm()
 
