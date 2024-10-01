@@ -18,8 +18,10 @@ from .utils import (cartData, cookieCart, guestOrder, is_valid_card_number,
 today = timezone.now().date()  # Obtém a data atual
 
 def store(request):
-    #today = timezone.now().date()  # Obtém a data atual
-    products = Product.objects.filter(on_sale=True, available_from__lte=today, available_to__gte=today)
+    products = Product.objects.filter(on_sale=True, 
+                                    is_rented=False, 
+                                    available_from__lte=today, 
+                                    available_to__gte=today)
     return render(request, 'store/store.html', {'products': products})
 
 def cart(request):
@@ -120,15 +122,15 @@ def finish(request):
     return render(request, 'store/finish.html')  
 
 def shared_space(request):
-    shared_space_products = Product.objects.filter(space_type='compartilhado', available_from__lte=today, available_to__gte=today)
+    shared_space_products = Product.objects.filter(space_type='compartilhado', is_rented=False, available_from__lte=today, available_to__gte=today)
     return render(request, 'store/shared_space.html', {'shared_space_products': shared_space_products})
 
 def office_spaces(request):
-    office_products = Product.objects.filter(space_type='escritorio', available_from__lte=today, available_to__gte=today)
+    office_products = Product.objects.filter(space_type='escritorio', is_rented=False, available_from__lte=today, available_to__gte=today)
     return render(request, 'store/office_spaces.html', {'office_products': office_products})
 
 def auditorium_spaces(request):
-    auditorium_products = Product.objects.filter(space_type='auditorio', available_from__lte=today, available_to__gte=today)
+    auditorium_products = Product.objects.filter(space_type='auditorio', is_rented=False,  available_from__lte=today, available_to__gte=today)
     return render(request, 'store/auditorium_spaces.html', {'auditorium_products': auditorium_products})
 
 def search_results(request):
@@ -149,19 +151,42 @@ def search_results(request):
     }
     return render(request, 'store/search.html', context)
 
-
 def validar_transacao(request):
     if request.method == 'POST':
         data = request.POST
         card_number = data.get('card-number')
         cvv = data.get('cvv')
-        
-        if is_valid_card_number(card_number) and is_valid_cvv(cvv):
-            finish_url = reverse('finish')
-            return JsonResponse({'success': True, 'redirect_url': finish_url})
+
+        # Obtenha o cliente autenticado
+        if request.user.is_authenticated:
+            customer = request.user.customer
+            try:
+                # Obtenha o pedido que está sendo finalizado
+                order = Order.objects.get(customer=customer, complete=False)
+            except Order.DoesNotExist:
+                return JsonResponse({'success': False, 'error': 'Pedido não encontrado.'})
+
+            if is_valid_card_number(card_number) and is_valid_cvv(cvv):
+                # Marcar o pedido como completo
+                order.complete = True
+                order.save()
+
+                # Atualize o status dos produtos no pedido
+                for item in order.orderitem_set.all():
+                    product = item.product
+                    #product.on_sale = False
+                    product.is_rented = True
+                    product.save()
+
+                # Redirecionar para a página de finalização
+                finish_url = reverse('finish')
+                return JsonResponse({'success': True, 'redirect_url': finish_url})
+            else:
+                return JsonResponse({'success': False, 'error': 'Número do cartão ou CVV inválido.'})
         else:
-            return JsonResponse({'success': False, 'error': 'Número do cartão inválido.'})
+            return JsonResponse({'success': False, 'error': 'Usuário não autenticado.'})
     return JsonResponse({'success': False, 'error': 'Método não permitido.'})
+
 
 def privacy_policy(request):
     return render(request, 'store/privacy_policy.html')
