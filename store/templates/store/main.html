@@ -1,153 +1,141 @@
 <!DOCTYPE html>
 {% load static %}
-<html>
+<html lang="pt-BR">
+
 <head>
-	<title>SpaceTW</title>
+    <title>SpaceTW</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript">
+        var user = '{{request.user}}'
 
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+        function getToken(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getToken('csrftoken')
 
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        function getCookie(name) {
+            var cookieArr = document.cookie.split(";");
 
-	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+            for (var i = 0; i < cookieArr.length; i++) {
+                var cookiePair = cookieArr[i].split("=");
 
-	<script type="text/javascript">
-		var user = '{{request.user}}'
+                if (name == cookiePair[0].trim()) {
+                    return decodeURIComponent(cookiePair[1]);
+                }
+            }
 
-		function getToken(name) {
-		    var cookieValue = null;
-		    if (document.cookie && document.cookie !== '') {
-		        var cookies = document.cookie.split(';');
-		        for (var i = 0; i < cookies.length; i++) {
-		            var cookie = cookies[i].trim();
-		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-		                break;
-		            }
-		        }
-		    }
-		    return cookieValue;
-		}
-		var csrftoken = getToken('csrftoken')
+            return null;
+        }
+        var cart = JSON.parse(getCookie('cart'))
 
-		function getCookie(name) {
-		    var cookieArr = document.cookie.split(";");
+        if (cart == undefined) {
+            cart = {}
+            console.log('Cart Created!', cart)
+            document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+        }
+        console.log('Cart:', cart)
 
-		    for(var i = 0; i < cookieArr.length; i++) {
-		        var cookiePair = cookieArr[i].split("=");
-
-		        if(name == cookiePair[0].trim()) {
-		            return decodeURIComponent(cookiePair[1]);
-		        }
-		    }
-
-		    return null;
-		}
-		var cart = JSON.parse(getCookie('cart'))
-
-		if (cart == undefined){
-			cart = {}
-			console.log('Cart Created!', cart)
-			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
-		}
-		console.log('Cart:', cart)
-	
-	</script>
-
+    </script>
 </head>
-<body>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	  <div class="logo">
-	  <a class="navbar-brand" href="{% url 'store' %}"><img src="{% static 'images/logo.svg' %}" alt=""></a>
-	  </div>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
-	  </button>
-
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-		<div class="seach_bar">
-			<form method="GET" action="{% url 'search_results' %}">
-				<div class="barra">
-					<input type="text" name="query" placeholder="O que você procura?">
-				</div>
-				<div class="lupa">
-					<button type="submit">
-						<img src="{% static 'images/lupa.svg' %}" alt="">
-					</button>
-				</div>
-			</form>
+<body class="min-h-screen flex flex-col text-gray-300 font-sans">
+    <!-- Navbar -->
+    <nav class="bg-sky-950 text-white p-4">
+        <div class="container mx-auto flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a class="navbar-brand" href="{% url 'store' %}">
+                    <img src="{% static 'images/logo.svg' %}" class="w-16" alt="Logo">
+                </a>
+            </div>
+            <!-- Authentication and Cart -->
+            <div class="flex items-center space-x-4">
+                {% if request.user.is_authenticated %}
+                <p class="text-sm lg:text-base">Bem-vindo, {{ request.user.username }}!</p>
+                <a href="{% url 'store_logout' %}" class="bg-yellow-500 text-white rounded-lg px-4 py-2">Logout</a>
+                {% else %}
+                <a href="{% url 'store_login' %}" class="bg-yellow-500 text-white rounded-lg px-4 py-2">Login</a>
+                <a href="{% url 'register' %}" class="bg-green-500 text-white rounded-lg px-4 py-2">Registrar</a>
+                {% endif %}
+                <a href="{% url 'cart' %}" class="relative">
+                    <img id="cart-icon" class="w-6 inline-block" src="{% static 'images/cart.png' %}" alt="Cart Icon">
+                    <p id="cart-total"
+                        class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-center">
+                        {{cartItems}}</p>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <!---Main Content-->
+    <div class="flex-grow">
+        <!-- Barra de Pesquisa Centralizada -->
+        <div class="container mx-auto mt-6">
+            <div class="flex justify-center">
+                <form method="GET" action="{% url 'search_results' %}"
+                    class="flex items-center bg-white rounded-full shadow-lg w-full sm:w-3/4 lg:w-1/2 border">
+                    <input type="text" name="query" placeholder="O que você procura?"
+                        class="w-full px-4 py-4 text-black rounded-l-full focus:outline-none text-lg">
+                    <button type="submit" class="bg-sky-950 p-2 rounded-full mr-4">
+                        <img src="{% static 'images/lupa.svg' %}" class="w-6 h-6" alt="Lupa">
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- Ícones de Categoria Centralizados -->
+        <div class="container mx-auto mt-6 w-full sm:w-3/4 lg:w-1/2">
+            <div class="flex justify-evenly flex-wrap">
+                <a href="{% url 'shared_space' %}" class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                    <img src="{% static 'images/coworking.svg' %}" class="w-9 mx-auto" alt="">
+                    <h6 class="text-sm text-gray-500 mt-2">Espaços<br>Compartilhados</h6>
+                </a>
+                <a href="{% url 'auditorium_spaces' %}" class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                    <img src="{% static 'images/cinema.svg' %}" class="w-9 mx-auto" alt="">
+                    <h6 class="text-sm text-gray-500 mt-2">Auditórios</h6>
+                </a>
+                <a href="{% url 'office_spaces' %}" class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                    <img src="{% static 'images/trabalhador.svg' %}" class="w-9 mx-auto" alt="">
+                    <h6 class="text-sm text-gray-500 mt-2">Escritórios</h6>
+                </a>
+                <a href="{% url 'store' %}" class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                    <img src="{% static 'images/promotion.svg' %}" class="w-9 mx-auto" alt="">
+                    <h6 class="text-sm text-gray-500 mt-2">Ofertas</h6>
+                </a>
+                <a href="{% url 'about' %}" class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                    <img src="{% static 'images/about.svg' %}" class="w-9 mx-auto" alt="">
+                    <h6 class="text-sm text-gray-500 mt-2">Sobre</h6>
+                </a>
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'create_room' %}" class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                    <img src="{% static 'images/house-add.svg' %}" class="w-9 mx-auto" alt="">
+                    <h6 class="text-sm text-gray-500 mt-2">ADICIONAR ESPAÇO</h6>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+		<div class="container mx-auto my-8">
+		{% block content %}
+		{% endblock content %}
 		</div>
-	
-		<div class="categoria">
-			<div class="imagem_categoria">
-				<figure>
-					<a href="{% url 'shared_space' %}"><img src="{% static 'images/coworking.svg' %}" alt=""><h6>ESPAÇOS<br>COMPARTILHADOS</h6></a>
-				</figure>
-				<figure>
-					<a href="{% url 'auditorium_spaces' %}"><img src="{% static 'images/cinema.svg' %}" alt=""><h6>AUDITÓRIOS</h6></a>
-				</figure>
-				<figure>
-					<a href="{% url 'office_spaces' %}"><img src="{% static 'images/trabalhador.svg' %}" alt=""><h6>ESCRITÓRIOS</h6></a>
-				</figure>
-				<figure>
-					<a href="{% url 'store' %}"><img src="{% static 'images/promotion.svg' %}" alt=""><h6>OFERTAS</h6></a>
-				</figure>
-				<figure>
-					<a href="{% url 'about' %}"><img src="{% static 'images/about.svg' %}" alt=""><h6>SOBRE</h6></a>
-				</figure>
-				<figure>
-					{% if request.user.is_authenticated %}
-					<a href="{% url 'create_room' %}">
-						<img src="{% static 'images/house-add.svg' %}" alt="">
-						<h6>ADICIONAR ESPAÇO</h6>
-					</a>
-					{% endif %}
-				</figure>
-				
-			</div>
-		</div>
-
-	  </div>
-
-	  <div class="form-inline my-2 my-lg-0">
-		{% if request.user.is_authenticated %}
-			<p class="text-white">Bem-vindo, {{ request.user.username }}!</p>
-			<a href="{% url 'store_logout' %}" class="btn btn-warning">Logout</a>
-		{% else %}
-			<a href="{% url 'store_login' %}" class="btn btn-warning">Login</a>
-			<a href="{% url 'register' %}" class="btn btn-success ml-2">Registrar</a>
-		{% endif %}
-		
-		<a href="{% url 'cart' %}">
-		   <img  id="cart-icon" src="{% static 'images/cart.png' %}">
-	   </a>
-	   <p id="cart-total">{{cartItems}}</p>
-
-   </div>
-	 
-
-	</nav>
-
-    <div class="container">
-            <br>
-            {% block content %}
-
-
-            {% endblock content %}
     </div>
-
-	<footer class="bg-dark mt-5 p-4 text-center" style="color: white;">
-		<p><h6>&copy; 2024 SpaceTW. Todos os direitos reservados.</h6></p>
-		<p><a href="{% url 'privacy_policy' %}" style="color: white;">Política de Privacidade</a> | <a href="{% url 'terms_of_service' %}" style="color: white;">Termos de Serviço</a></p>
-	</footer>
-
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
-	<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+    <footer class="bg-sky-950 text-white text-center p-4 mt-12">
+        <h6 class="text-sm">&copy; 2024 SpaceTW. Todos os direitos reservados.</h6>
+        <p class="text-white text-sm">
+            <a href="{% url 'privacy_policy' %}" class="text-white underline">Política de Privacidade</a> |
+            <a href="{% url 'terms_of_service' %}" class="text-white underline">Termos de Serviço</a>
+        </p>
+    </footer>
 </body>
+
 </html>

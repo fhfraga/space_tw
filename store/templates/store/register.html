@@ -1,13 +1,72 @@
-{% extends "store/main.html" %}
+{% extends 'store/main.html' %}
 {% load static %}
-
 {% block content %}
-<div class="container">
-    <h2>Registrar-se</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Registrar</button>
-    </form>
+<div class="flex justify-center mt-10 mb-6">
+    <div class="w-full max-w-md">
+        <form method="post" action="{% url 'register' %}" class="bg-white p-8 rounded-lg shadow-lg border">
+            {% csrf_token %}
+            <h2 class="text-center text-gray-400 text-xl font-bold mb-4">Crie sua conta no SpaceTW!</h2>
+
+            <!-- Campo de nome de usuário -->
+            <div class="mb-4">
+                <label for="username" class="block text-black text-sm mb-2">Usuário:</label>
+                <input type="text" id="username" name="username" required
+                    class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <!-- Exibe erro se houver -->
+                {% if form.username.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.username.errors }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Campo de e-mail -->
+            <div class="mb-4">
+                <label for="email" class="block text-black text-sm mb-2">E-mail:</label>
+                <input type="email" id="email" name="email" required
+                    class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <!-- Exibe erro se houver -->
+                {% if form.email.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.email.errors }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Campo de senha -->
+            <div class="mb-4">
+                <label for="password1" class="block text-black text-sm mb-2">Senha:</label>
+                <input type="password" id="password1" name="password1" required
+                    class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <!-- Exibe erro de validação da senha -->
+                {% if form.password1.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.password1.errors }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Campo de confirmação de senha -->
+            <div class="mb-6">
+                <label for="password2" class="block text-black text-sm mb-2">Confirme a Senha:</label>
+                <input type="password" id="password2" name="password2" required
+                    class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <!-- Exibe erro se houver -->
+                {% if form.password2.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.password2.errors }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Botão de registro -->
+            <div class="flex items-center justify-between">
+                <button type="submit"
+                    class="bg-sky-950 hover:bg-sky-900 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full">
+                    Registrar
+                </button>
+            </div>
+
+            <!-- Link para a tela de login -->
+            <p class="text-center text-gray-500 mt-4">
+                Já tem uma conta?
+                <a href="{% url 'store_login' %}" class="text-sky-900 font-bold hover:underline">
+                    Faça login
+                </a>
+            </p>
+        </form>
+    </div>
 </div>
-{% endblock %}
+{% endblock content %}

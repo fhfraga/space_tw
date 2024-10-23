@@ -1,21 +1,35 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-    <div class="row">
-        <div class="col-lg-6 offset-lg-3">
-            <h2>Login</h2>
-            <form method="post" action="{% url 'store_login' %}">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="username">Usuário:</label>
-                    <input type="text" class="form-control" id="username" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Senha:</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Entrar</button>
-            </form>
-        </div>
+<div class="flex justify-center mt-10">
+    <div class="w-full max-w-md">
+        <form method="post" action="{% url 'store_login' %}" class="bg-white p-8 rounded-lg shadow-lg border">
+            {% csrf_token %}
+            <h2 class="text-center text-gray-400 text-xl font-bold mb-4">Bem vindo a SpaceTW!</h2>
+            <div class="mb-4">
+                <label for="username" class="block text-black text-sm mb-2">Usuário/Login:</label>
+                <input type="text" id="username" name="username" required
+                    class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border">
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-black text-sm mb-2">Senha:</label>
+                <input type="password" id="password" name="password" required
+                    class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border">
+            </div>
+            <div class="flex items-center justify-between">
+                <button type="submit"
+                    class="bg-sky-950 hover:bg-sky-900 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full">
+                    Entrar
+                </button>
+            </div>
+            <!--"Ainda não tem uma conta? Clique aqui"-->
+            <p class="text-center text-gray-500 mt-4">
+                Ainda não tem uma conta?
+                <a href="{% url 'register' %}" class="text-sky-900 font-bold hover:underline">
+                    Clique aqui
+                </a>
+            </p>
+        </form>
     </div>
+</div>
 {% endblock content %}
