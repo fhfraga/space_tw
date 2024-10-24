@@ -2,8 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="container mx-auto mt-10">
-    <h1 class="text-center text-2xl text-sky-900 mb-6 font-sans font-bold uppercase">Espaços Compartilhados para Alugar
-    </h1>
+    <h1 class="text-center text-2xl text-sky-900 mb-6 font-sans font-bold uppercase">Espaços Compartilhados disponiveis</h1>
     <div class="flex flex-wrap justify-center gap-6">
         {% for product in shared_space_products %}
         {% if product.available_from and product.available_to %}
