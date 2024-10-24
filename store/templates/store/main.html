@@ -61,22 +61,28 @@
                 </a>
             </div>
             <!-- Authentication and Cart -->
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-4 relative">
                 {% if request.user.is_authenticated %}
                 <p class="text-sm lg:text-base">Bem-vindo, {{ request.user.username }}!</p>
                 <a href="{% url 'store_logout' %}" class="bg-yellow-500 text-white rounded-lg px-4 py-2">Logout</a>
                 {% else %}
-                <a href="{% url 'store_login' %}" class="bg-yellow-500 text-white rounded-lg px-4 py-2">Login</a>
-                <a href="{% url 'register' %}" class="bg-green-500 text-white rounded-lg px-4 py-2">Registrar</a>
+                <!-- Botão do Menu -->
+                <button id="auth-menu-toggle" class="focus:outline-none">
+                    <img src="{% static 'images/foto.svg' %}" class="w-6 h-6" alt="User Icon">
+                </button>
+                <!-- Menu de Login e Registro -->
+                <div id="auth-menu" class="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg hidden">
+                    <a href="{% url 'store_login' %}" class="block px-4 py-2 hover:bg-gray-100">Login</a>
+                    <a href="{% url 'register' %}" class="block px-4 py-2 hover:bg-gray-100">Registrar</a>
+                </div>
                 {% endif %}
+                <!-- Botão do Carrinho -->
                 <a href="{% url 'cart' %}" class="relative">
                     <img id="cart-icon" class="w-6 inline-block" src="{% static 'images/cart.png' %}" alt="Cart Icon">
-                    <p id="cart-total"
-                        class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-center">
+                    <p id="cart-total" class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-center">
                         {{cartItems}}</p>
                 </a>
             </div>
-        </div>
     </nav>
     <!---Main Content-->
     <div class="flex-grow">
@@ -96,15 +102,18 @@
         <!-- Ícones de Categoria Centralizados -->
         <div class="container mx-auto mt-6 w-full sm:w-3/4 lg:w-1/2">
             <div class="flex justify-evenly flex-wrap">
-                <a href="{% url 'shared_space' %}" class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                <a href="{% url 'shared_space' %}"
+                    class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
                     <img src="{% static 'images/coworking.svg' %}" class="w-9 mx-auto" alt="">
                     <h6 class="text-sm text-gray-500 mt-2">Espaços<br>Compartilhados</h6>
                 </a>
-                <a href="{% url 'auditorium_spaces' %}" class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                <a href="{% url 'auditorium_spaces' %}"
+                    class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
                     <img src="{% static 'images/cinema.svg' %}" class="w-9 mx-auto" alt="">
                     <h6 class="text-sm text-gray-500 mt-2">Auditórios</h6>
                 </a>
-                <a href="{% url 'office_spaces' %}" class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                <a href="{% url 'office_spaces' %}"
+                    class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
                     <img src="{% static 'images/trabalhador.svg' %}" class="w-9 mx-auto" alt="">
                     <h6 class="text-sm text-gray-500 mt-2">Escritórios</h6>
                 </a>
@@ -124,10 +133,10 @@
                 {% endif %}
             </div>
         </div>
-		<div class="container mx-auto my-8">
-		{% block content %}
-		{% endblock content %}
-		</div>
+        <div class="container mx-auto my-8">
+            {% block content %}
+            {% endblock content %}
+        </div>
     </div>
     <footer class="bg-sky-950 text-white text-center p-4 mt-12">
         <h6 class="text-sm">&copy; 2024 SpaceTW. Todos os direitos reservados.</h6>
@@ -136,6 +145,7 @@
             <a href="{% url 'terms_of_service' %}" class="text-white underline">Termos de Serviço</a>
         </p>
     </footer>
+    <script src="/static/js/menubar.js"></script>
 </body>
 
 </html>
