@@ -17,12 +17,12 @@
     <!--Fixar Ítens ao topo-->
     <div class="fixed top-0 left-0 w-full z-50 bg-gray-100">
         <!-- Navbar -->
-        <nav class="bg-sky-950 text-white p-4">
+        <nav class="bg-sky-950 text-white p-2 relative z-50">
             <div class="container mx-auto flex items-center justify-between">
                 <!-- Logo -->
-                <div class="flex items-center">
-                    <a class="navbar-brand" href="{% url 'store' %}">
-                        <img src="{% static 'images/logo.svg' %}" class="w-16" alt="Logo">
+                <div class="flex items-center relative mt-5">
+                    <a href="{% url 'store' %}">
+                        <img src="{% static 'images/logo.svg' %}" class="w-20 -mb-14 shadow-lg" alt="Logo">
                     </a>
                 </div>
                 <!-- Authentication and Cart -->
@@ -52,9 +52,8 @@
                     </a>
                 </div>
         </nav>
-        <!---Main Content-->
+        <!-- Barra de Pesquisa -->
         <div class="flex-grow">
-            <!-- Barra de Pesquisa Centralizada -->
             <div class="container mx-auto mt-6">
                 <div class="flex justify-center">
                     <form method="GET" action="{% url 'search_results' %}"
@@ -104,6 +103,7 @@
             </div>
         </div>
     </div>
+    <!---Main Content-->
     <div class="container mx-auto my-8 mt-[18rem]">
         {% block content %}
         {% endblock content %}
