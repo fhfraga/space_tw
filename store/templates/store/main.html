@@ -10,96 +10,103 @@
         var user = "{{ request.user }}";
         var csrftoken = "{{ csrf_token }}";
     </script>
-    <script src="{% static 'js/requestUser.js' %}"></script>
+    <script src="{% static 'js/scrollShadow.js' %}"></script>
 </head>
 
 <body class="min-h-screen flex flex-col text-gray-300 font-sans bg-gray-100">
-    <!-- Navbar -->
-    <nav class="bg-sky-950 text-white p-4">
-        <div class="container mx-auto flex items-center justify-between">
-            <!-- Logo -->
-            <div class="flex items-center">
-                <a class="navbar-brand" href="{% url 'store' %}">
-                    <img src="{% static 'images/logo.svg' %}" class="w-16" alt="Logo">
-                </a>
-            </div>
-            <!-- Authentication and Cart -->
-            <div class="flex items-center space-x-4 relative">
-                {% if request.user.is_authenticated %}
-                <p class="text-sm lg:text-base">Bem-vindo, {{ request.user.username }}!</p>
-                <a href="{% url 'store_logout' %}" class="bg-yellow-500 text-white rounded-lg px-4 py-2">Logout</a>
-                {% else %}
-                <!-- Botão do Menu -->
-                <button id="auth-menu-toggle" class="focus:outline-none">
-                    <img src="{% static 'images/foto.svg' %}" class="w-6 h-6" alt="User Icon">
-                </button>
-                <!-- Menu de Login e Registro -->
-                <div id="auth-menu" class="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg hidden">
-                    <a href="{% url 'store_login' %}" class="block px-4 py-2 hover:bg-gray-100">Login</a>
-                    <a href="{% url 'register' %}" class="block px-4 py-2 hover:bg-gray-100">Registrar</a>
+    <!--Fixar Ítens ao topo-->
+    <div class="fixed top-0 left-0 w-full z-50 bg-gray-100">
+        <!-- Navbar -->
+        <nav class="bg-sky-950 text-white p-4">
+            <div class="container mx-auto flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a class="navbar-brand" href="{% url 'store' %}">
+                        <img src="{% static 'images/logo.svg' %}" class="w-16" alt="Logo">
+                    </a>
                 </div>
-                {% endif %}
-                <!-- Botão do Carrinho -->
-                <a href="{% url 'cart' %}" class="relative">
-                    <img id="cart-icon" class="w-6 inline-block" src="{% static 'images/cart.png' %}" alt="Cart Icon">
-                    <p id="cart-total" class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-center">
-                        {{cartItems}}</p>
-                </a>
-            </div>
-    </nav>
-    <!---Main Content-->
-    <div class="flex-grow">
-        <!-- Barra de Pesquisa Centralizada -->
-        <div class="container mx-auto mt-6">
-            <div class="flex justify-center">
-                <form method="GET" action="{% url 'search_results' %}"
-                    class="flex items-center bg-white rounded-full shadow-lg w-full sm:w-3/4 lg:w-1/2 border">
-                    <input type="text" name="query" placeholder="O que você procura?"
-                        class="w-full px-4 py-4 text-black rounded-l-full focus:outline-none text-lg">
-                    <button type="submit" class="bg-sky-950 p-2 rounded-full mr-4">
-                        <img src="{% static 'images/lupa.svg' %}" class="w-6 h-6" alt="Lupa">
+                <!-- Authentication and Cart -->
+                <div class="flex items-center space-x-4 relative">
+                    {% if request.user.is_authenticated %}
+                    <p class="text-sm lg:text-base">Bem-vindo, {{ request.user.username }}!</p>
+                    <a href="{% url 'store_logout' %}" class="bg-yellow-500 text-white rounded-lg px-4 py-2">Logout</a>
+                    {% else %}
+                    <!-- Botão do Menu -->
+                    <button id="auth-menu-toggle" class="focus:outline-none">
+                        <img src="{% static 'images/foto.svg' %}" class="w-6 h-6" alt="User Icon">
                     </button>
-                </form>
+                    <!-- Menu de Login e Registro -->
+                    <div id="auth-menu"
+                        class="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg hidden">
+                        <a href="{% url 'store_login' %}" class="block px-4 py-2 hover:bg-gray-100">Login</a>
+                        <a href="{% url 'register' %}" class="block px-4 py-2 hover:bg-gray-100">Registrar</a>
+                    </div>
+                    {% endif %}
+                    <!-- Botão do Carrinho -->
+                    <a href="{% url 'cart' %}" class="relative">
+                        <img id="cart-icon" class="w-6 inline-block" src="{% static 'images/cart.png' %}"
+                            alt="Cart Icon">
+                        <p id="cart-total"
+                            class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-center">
+                            {{cartItems}}</p>
+                    </a>
+                </div>
+        </nav>
+        <!---Main Content-->
+        <div class="flex-grow">
+            <!-- Barra de Pesquisa Centralizada -->
+            <div class="container mx-auto mt-6">
+                <div class="flex justify-center">
+                    <form method="GET" action="{% url 'search_results' %}"
+                        class="flex items-center bg-white rounded-full shadow-lg w-full sm:w-3/4 lg:w-1/2 border">
+                        <input type="text" name="query" placeholder="O que você procura?"
+                            class="w-full px-4 py-4 text-black rounded-l-full focus:outline-none text-lg">
+                        <button type="submit" class="bg-sky-950 p-2 rounded-full mr-4">
+                            <img src="{% static 'images/lupa.svg' %}" class="w-6 h-6" alt="Lupa">
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <!-- Ícones de Categoria Centralizados -->
+            <div class="container mx-auto mt-6 w-full sm:w-3/4 lg:w-1/2">
+                <div class="flex justify-evenly flex-wrap">
+                    <a href="{% url 'shared_space' %}"
+                        class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                        <img src="{% static 'images/coworking.svg' %}" class="w-9 mx-auto" alt="">
+                        <h6 class="text-sm text-gray-500 mt-2">Espaços<br>Compartilhados</h6>
+                    </a>
+                    <a href="{% url 'auditorium_spaces' %}"
+                        class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                        <img src="{% static 'images/cinema.svg' %}" class="w-9 mx-auto" alt="">
+                        <h6 class="text-sm text-gray-500 mt-2">Auditórios</h6>
+                    </a>
+                    <a href="{% url 'office_spaces' %}"
+                        class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                        <img src="{% static 'images/trabalhador.svg' %}" class="w-9 mx-auto" alt="">
+                        <h6 class="text-sm text-gray-500 mt-2">Escritórios</h6>
+                    </a>
+                    <a href="{% url 'store' %}" class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                        <img src="{% static 'images/promotion.svg' %}" class="w-9 mx-auto" alt="">
+                        <h6 class="text-sm text-gray-500 mt-2">Ofertas</h6>
+                    </a>
+                    <a href="{% url 'about' %}" class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                        <img src="{% static 'images/about.svg' %}" class="w-9 mx-auto" alt="">
+                        <h6 class="text-sm text-gray-500 mt-2">Sobre</h6>
+                    </a>
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'create_room' %}"
+                        class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
+                        <img src="{% static 'images/house-add.svg' %}" class="w-9 mx-auto" alt="">
+                        <h6 class="text-sm text-gray-500 mt-2">ADICIONAR ESPAÇO</h6>
+                    </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
-        <!-- Ícones de Categoria Centralizados -->
-        <div class="container mx-auto mt-6 w-full sm:w-3/4 lg:w-1/2">
-            <div class="flex justify-evenly flex-wrap">
-                <a href="{% url 'shared_space' %}"
-                    class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
-                    <img src="{% static 'images/coworking.svg' %}" class="w-9 mx-auto" alt="">
-                    <h6 class="text-sm text-gray-500 mt-2">Espaços<br>Compartilhados</h6>
-                </a>
-                <a href="{% url 'auditorium_spaces' %}"
-                    class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
-                    <img src="{% static 'images/cinema.svg' %}" class="w-9 mx-auto" alt="">
-                    <h6 class="text-sm text-gray-500 mt-2">Auditórios</h6>
-                </a>
-                <a href="{% url 'office_spaces' %}"
-                    class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
-                    <img src="{% static 'images/trabalhador.svg' %}" class="w-9 mx-auto" alt="">
-                    <h6 class="text-sm text-gray-500 mt-2">Escritórios</h6>
-                </a>
-                <a href="{% url 'store' %}" class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
-                    <img src="{% static 'images/promotion.svg' %}" class="w-9 mx-auto" alt="">
-                    <h6 class="text-sm text-gray-500 mt-2">Ofertas</h6>
-                </a>
-                <a href="{% url 'about' %}" class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
-                    <img src="{% static 'images/about.svg' %}" class="w-9 mx-auto" alt="">
-                    <h6 class="text-sm text-gray-500 mt-2">Sobre</h6>
-                </a>
-                {% if request.user.is_authenticated %}
-                <a href="{% url 'create_room' %}" class="text-center hover:scale-125 transition duration-300 w-36 mb-4">
-                    <img src="{% static 'images/house-add.svg' %}" class="w-9 mx-auto" alt="">
-                    <h6 class="text-sm text-gray-500 mt-2">ADICIONAR ESPAÇO</h6>
-                </a>
-                {% endif %}
-            </div>
-        </div>
-        <div class="container mx-auto my-8">
-            {% block content %}
-            {% endblock content %}
-        </div>
+    </div>
+    <div class="container mx-auto my-8 mt-[18rem]">
+        {% block content %}
+        {% endblock content %}
     </div>
     <footer class="bg-sky-950 text-white text-center p-4 mt-12">
         <h6 class="text-sm">&copy; 2024 SpaceTW. Todos os direitos reservados.</h6>
