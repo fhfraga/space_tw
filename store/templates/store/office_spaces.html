@@ -9,6 +9,9 @@
         <div class="relative bg-white shadow-lg rounded-lg overflow-hidden border">
             <img class="w-full h-48 object-cover" src="{{ product.imageURL }}" alt="{{ product.name }}">
             <div class="p-4">
+                {% if product.on_sale %}
+                <span class="absolute top-0 left-0 bg-red-500 text-white py-1 px-3 rounded-br-lg">Oferta</span>
+                {% endif %}
                 <div class="flex justify-end">
                     <h6 class="font-bold text-gray-800 text-lg uppercase">{{ product.name }}</h6>
                 </div>
@@ -19,7 +22,7 @@
                             class="bg-sky-950 hover:bg-sky-900 text-white font-bold py-2 px-4 rounded-lg focus:outline-none update-cart mr-4">
                             Alugar
                         </button>
-                        <a href="{{ product.link }}" class="bg-sky-950 hover:bg-sky-900 text-white font-bold py-2 px-4 rounded-lg focus:outline-none text-center">
+                        <a href="{{ product.link }}" class="bg-sky-900 hover:bg-sky-950 text-white font-bold py-2 px-4 rounded-lg focus:outline-none text-center">
                             Sobre
                         </a>
                     </div>
