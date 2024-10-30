@@ -59,12 +59,13 @@
                     {% endif %}
                     <!-- Botão do Carrinho -->
                     <a href="{% url 'cart' %}" class="relative">
-                        <img id="cart-icon" class="w-6 inline-block" src="{% static 'images/cart.png' %}"
-                            alt="Cart Icon">
-                        <p id="cart-total"
-                            class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-center">
-                            {{cartItems}}</p>
-                    </a>
+                        <img id="cart-icon" class="w-6 inline-block" src="{% static 'images/cart.png' %}" alt="Cart Icon">
+                        {% if cartItems > 0 %}
+                            <p id="cart-total" class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-center">
+                                {{ cartItems }}
+                            </p>
+                        {% endif %}
+                    </a>                    
                 </div>
                 <!-- Menu mobile com ícones simplificados -->
                 <div class="sm:hidden flex space-x-2">
