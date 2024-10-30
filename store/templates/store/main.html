@@ -29,7 +29,7 @@
                 <!-- Authentication and Cart -->
                 <div class="flex items-center space-x-4 relative sm:flex hidden">
                     {% if request.user.is_authenticated %}
-                    <p class="text-sm lg:text-base">Bem-vindo, <span class="text-yellow-500">{{ request.user.username }}</span>!</p>
+                    <p class="text-sm lg:text-base">Bem-vindo, <span class="text-yellow-500 font-bold">{{ request.user.username }}</span>!</p>
                     <div class="relative">
                         <button id="auth-menu-toggle" class="focus:outline-none">
                             <img src="{% static 'images/menu_icon.svg' %}" class="w-16 mt-2" alt="User Icon">
@@ -124,7 +124,7 @@
                     <a href="{% url 'create_room' %}"
                         class="text-center hover:scale-125 transition duration-300 w-24 sm:w-36 mb-4">
                         <img src="{% static 'images/house-add.svg' %}" class="w-8 sm:w-9 mx-auto" alt="">
-                        <h6 class="text-xs sm:text-sm text-gray-500 mt-2">ADICIONAR ESPAÇO</h6>
+                        <h6 class="text-xs sm:text-sm text-gray-500 mt-2">Novo</h6>
                     </a>
                     {% endif %}
                 </div>
