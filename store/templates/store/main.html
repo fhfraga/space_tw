@@ -30,7 +30,17 @@
                 <div class="flex items-center space-x-4 relative sm:flex hidden">
                     {% if request.user.is_authenticated %}
                     <p class="text-sm lg:text-base">Bem-vindo, {{ request.user.username }}!</p>
-                    <a href="{% url 'store_logout' %}" class="bg-yellow-500 text-white rounded-lg px-4 py-2">Logout</a>
+                    <div class="relative">
+                        <button id="auth-menu-toggle" class="focus:outline-none">
+                            <img src="{% static 'images/menu_icon.svg' %}" class="w-16 mt-2" alt="User Icon">
+                        </button>
+                        <!-- Menu sair -->
+                        <div id="auth-menu"
+                            class="absolute top-full right-0 w-48 bg-gray-100 text-black rounded-lg shadow-lg hidden">
+                            <a href="{% url 'store_logout' %}" 
+                                class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200 rounded-t-lg">Sair</a>
+                        </div>
+                    </div>
                     {% else %}
                     <!-- Botão do Menu -->
                     <div class="relative">
@@ -40,8 +50,10 @@
                         <!-- Menu de Login e Registro -->
                         <div id="auth-menu"
                             class="absolute top-full right-0 w-48 bg-gray-100 text-black rounded-lg shadow-lg hidden">
-                            <a href="{% url 'store_login' %}" class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border rounded-lg">Login</a>
-                            <a href="{% url 'register' %}" class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border rounded-lg">Registrar</a>
+                            <a href="{% url 'store_login' %}"
+                                class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200 rounded-t-lg">Login</a>
+                            <a href="{% url 'register' %}"
+                                class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-t border-gray-200 rounded-b-lg">Registrar</a>
                         </div>
                     </div>
                     {% endif %}
@@ -57,7 +69,7 @@
                 <!-- Menu mobile com ícones simplificados -->
                 <div class="sm:hidden flex space-x-2">
                     <button id="auth-menu-toggle-mobile" class="focus:outline-none">
-                        <img src="{% static 'images/foto.svg' %}" class="w-6 h-6" alt="User Icon">
+                        <img src="{% static 'images/menu_icon.svg' %}" class="w-6 h-6" alt="User Icon">
                     </button>
                     <a href="{% url 'cart' %}">
                         <img id="cart-icon-mobile" class="w-6 inline-block" src="{% static 'images/cart.png' %}"
