@@ -29,7 +29,7 @@
                 <!-- Authentication and Cart -->
                 <div class="flex items-center space-x-4 relative sm:flex hidden">
                     {% if request.user.is_authenticated %}
-                    <p class="text-sm lg:text-base">Bem-vindo, {{ request.user.username }}!</p>
+                    <p class="text-sm lg:text-base">Bem-vindo, <span class="text-yellow-500">{{ request.user.username }}</span>!</p>
                     <div class="relative">
                         <button id="auth-menu-toggle" class="focus:outline-none">
                             <img src="{% static 'images/menu_icon.svg' %}" class="w-16 mt-2" alt="User Icon">
