@@ -9,8 +9,8 @@
     <div class="mt-6 grid grid-cols-5 gap-6 font-semibold text-gray-700 bg-gray-200 p-4 rounded-lg">
         <div class="col-span-2 text-center font-bold">Item</div>
         <div class="text-center font-bold">Preço</div>
-        <div class="text-center font-bold">Remover</div>
         <div class="text-center font-bold">Subtotal</div>
+        <div class="text-center font-bold">Remover</div>
     </div>
 
     {% for item in items %}
@@ -20,12 +20,12 @@
             <span class="text-gray-700 font-bold">{{ item.product.name }}</span>
         </div>
         <div class="text-sky-900 font-bold text-center">R${{ item.product.price|floatformat:2 }}</div>
+        <div class="text-sky-900 font-bold text-center">R${{ item.get_total|floatformat:2 }}</div>
         <div class="flex justify-center">
             <button data-product="{{ item.product.id }}" data-action="remove" class="chg-quantity update-cart hover:scale-110 transition transform duration-300">
                 <img src="{% static 'images/remove.svg' %}" alt="Remover" class="w-6 h-6">
             </button>
         </div>
-        <div class="text-sky-900 font-bold text-center">R${{ item.get_total|floatformat:2 }}</div>
     </div>
     {% endfor %}
 
