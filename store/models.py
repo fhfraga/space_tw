@@ -26,7 +26,7 @@ class Product(models.Model):
         ('auditorio', 'Auditório'),
     ]
     space_type = models.CharField(max_length=20, choices=SPACE_TYPES, default='escritorio')
-    features = models.CharField(max_length=255, default='Nenhuma', blank=True)
+    features = models.CharField(max_length=255, blank=True)
 
     available_from = models.DateField(null=True, blank=True)
     available_to = models.DateField(null=True, blank=True)

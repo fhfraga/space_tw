@@ -2,17 +2,92 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
-    <h2 class="text-center" style="font-family: 'Times New Roman', Times, serif;">Criar Nova Sala</h2>
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
+<div class="flex justify-center mt-10 mb-6">
+    <div class="w-full max-w-xl">
+        <form method="POST" enctype="multipart/form-data" class="bg-white p-8 rounded-lg shadow-lg border">
+            {% csrf_token %}
+            <h2 class="text-center text-gray-400 text-xl font-bold mb-4 uppercase">Nova Sala</h2>
 
-                <button type="submit" class="btn btn-primary btn-block">Criar Sala</button>
-            </form>
-        </div>
+            <!-- Nome da Sala -->
+            <div class="mb-4">
+                <label for="{{ form.name.id_for_label }}" class="block text-black text-sm mb-2">{{ form.name.label }}:</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.name.errors|join:', ' }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Preço -->
+            <div class="mb-4">
+                <label for="{{ form.price.id_for_label }}" class="block text-black text-sm mb-2">{{ form.price.label }}:</label>
+                {{ form.price }}
+                {% if form.price.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.price.errors|join:', ' }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Tipo de Espaço -->
+            <div class="mb-4">
+                <label for="{{ form.space_type.id_for_label }}" class="block text-black text-sm mb-2">{{ form.space_type.label }}:</label>
+                {{ form.space_type }}
+                {% if form.space_type.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.space_type.errors|join:', ' }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Características -->
+            <div class="mb-4">
+                <label for="{{ form.features.id_for_label }}" class="block text-black text-sm mb-2">{{ form.features.label }}:</label>
+                {{ form.features }}
+                {% if form.features.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.features.errors|join:', ' }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Imagem -->
+            <div class="mb-4">
+                <label for="{{ form.image.id_for_label }}" class="block text-black text-sm mb-2">{{ form.image.label }}:</label>
+                {{ form.image }}
+                {% if form.image.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.image.errors|join:', ' }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Em Promoção (Checkbox) -->
+            <div class="mb-4 flex items-center">
+                {{ form.on_sale }}
+                <label for="{{ form.on_sale.id_for_label }}" class="ml-2 text-black text-sm">{{ form.on_sale.label }}</label>
+                {% if form.on_sale.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.on_sale.errors|join:', ' }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Disponível a partir de (Date Picker) -->
+            <div class="mb-4">
+                <label for="{{ form.available_from.id_for_label }}" class="block text-black text-sm mb-2">{{ form.available_from.label }}:</label>
+                {{ form.available_from }}
+                {% if form.available_from.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.available_from.errors|join:', ' }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Disponível até (Date Picker) -->
+            <div class="mb-4">
+                <label for="{{ form.available_to.id_for_label }}" class="block text-black text-sm mb-2">{{ form.available_to.label }}:</label>
+                {{ form.available_to }}
+                {% if form.available_to.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.available_to.errors|join:', ' }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Botão de criação da sala -->
+            <div class="flex items-center justify-between">
+                <button type="submit"
+                    class="bg-sky-950 hover:bg-sky-900 text-white font-bold py-2 px-4 rounded-lg w-full focus:outline-none">
+                    Criar Sala
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock content %}
