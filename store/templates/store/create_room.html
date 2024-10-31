@@ -63,8 +63,10 @@
             </div>
 
             <!-- Disponível a partir de (Date Picker) -->
-            <div class="mb-4">
-                <label for="{{ form.available_from.id_for_label }}" class="block text-black text-sm mb-2">{{ form.available_from.label }}:</label>
+            <div class="mb-4" onclick="document.getElementById('{{ form.available_from.id_for_label }}').click()">
+                <label for="{{ form.available_from.id_for_label }}" class="block text-black text-sm mb-2">
+                    {{ form.available_from.label }}:
+                </label>
                 {{ form.available_from }}
                 {% if form.available_from.errors %}
                     <p class="text-red-500 text-sm mt-1">{{ form.available_from.errors|join:', ' }}</p>
@@ -72,8 +74,10 @@
             </div>
 
             <!-- Disponível até (Date Picker) -->
-            <div class="mb-4">
-                <label for="{{ form.available_to.id_for_label }}" class="block text-black text-sm mb-2">{{ form.available_to.label }}:</label>
+            <div class="mb-4" onclick="document.getElementById('{{ form.available_to.id_for_label }}').click()">
+                <label for="{{ form.available_to.id_for_label }}" class="block text-black text-sm mb-2">
+                    {{ form.available_to.label }}:
+                </label>
                 {{ form.available_to }}
                 {% if form.available_to.errors %}
                     <p class="text-red-500 text-sm mt-1">{{ form.available_to.errors|join:', ' }}</p>

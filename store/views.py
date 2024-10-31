@@ -276,6 +276,7 @@ def create_room(request):
         if form.is_valid():
             product = form.save(commit=False)
             product.save()
+            messages.success(request, "Sala criada com sucesso!")
             return redirect("store")
     else:
         form = ProductForm()

@@ -2,7 +2,8 @@ document.getElementById('finalizar-btn').addEventListener('click', function() {
     var form = document.getElementById('form');
     var formData = new FormData(form);
 
-    formData.append('product_id', '{{ item.product.id }}');
+    // Inclua o ID do produto, se necessário
+    formData.append('product_id', document.getElementById('product_id').value);
 
     var isValid = true;
     document.querySelectorAll('#form [required]').forEach(function(field) {
@@ -12,11 +13,11 @@ document.getElementById('finalizar-btn').addEventListener('click', function() {
     });
 
     if (isValid) {
-        fetch("{% url 'validar_transacao' %}", {
+        fetch(validarTransacaoUrl, {  // Use a variável definida no template
             method: 'POST',
             body: formData,
             headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
+                'X-CSRFToken': csrfToken,  // Se necessário
             }
         })
         .then(response => response.json())
