@@ -79,8 +79,9 @@
                 </div>
             </div>
         </nav>
-        <!-- Barra de Pesquisa -->
-        <div class="flex-grow">
+        <!--Container pesquisa e icones-->
+        <div class="flex-grow hidden sm:block">
+            <!-- Barra de Pesquisa -->
             <div class="container mx-auto mt-6">
                 <div class="flex justify-center">
                     <form method="GET" action="{% url 'search_results' %}"
@@ -133,7 +134,7 @@
         </div>
     </div>
     <!---Main Content-->
-    <div class="container mx-auto my-8 mt-[18rem] px-4">
+    <div class="container mx-auto my-8 mt-12 sm:mt-[18rem] px-4">
         {% block content %}
         {% endblock content %}
     </div>
