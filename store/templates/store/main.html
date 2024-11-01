@@ -23,37 +23,32 @@
                 <!-- Logo -->
                 <div class="flex items-center relative mt-5">
                     <a href="{% url 'store' %}">
-                        <img src="{% static 'images/logo.svg' %}" class="w-20 -mb-14 drop-shadow-lg" alt="Logo">
+                        <img src="{% static 'images/logo.svg' %}" class="w-16 sm:w-20 -mb-14 drop-shadow-lg" alt="Logo">
                     </a>
                 </div>
-                <!-- Authentication and Cart -->
+                <!--Autenticação e Menu-->
                 <div class="flex items-center space-x-4 relative sm:flex hidden">
                     {% if request.user.is_authenticated %}
                     <p class="text-sm lg:text-base">Bem-vindo, <span class="text-yellow-500 font-bold">{{ request.user.username }}</span>!</p>
                     <div class="relative">
-                        <button id="auth-menu-toggle" class="focus:outline-none">
+                        <button id="auth-menu-toggle-desktop" class="focus:outline-none">
                             <img src="{% static 'images/menu_icon.svg' %}" class="w-16 mt-2" alt="User Icon">
                         </button>
-                        <!-- Menu sair -->
-                        <div id="auth-menu"
-                            class="absolute top-full right-0 w-48 bg-gray-100 text-black rounded-lg shadow-lg hidden">
-                            <a href="{% url 'store_logout' %}" 
-                                class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200 rounded-t-lg">Sair</a>
+                        <!--Sair-->
+                        <div id="auth-menu-desktop" class="absolute top-full right-0 w-48 bg-gray-100 text-black rounded-lg shadow-lg hidden">
+                            <a href="{% url 'store_logout' %}" class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200 rounded-t-lg">Sair</a>
                         </div>
                     </div>
                     {% else %}
-                    <!-- Botão do Menu -->
                     <div class="relative">
-                        <button id="auth-menu-toggle" class="focus:outline-none">
+                        <!--Botão icone-->
+                        <button id="auth-menu-toggle-desktop" class="focus:outline-none">
                             <img src="{% static 'images/menu_icon.svg' %}" class="w-16 mt-2" alt="User Icon">
                         </button>
-                        <!-- Menu de Login e Registro -->
-                        <div id="auth-menu"
-                            class="absolute top-full right-0 w-48 bg-gray-100 text-black rounded-lg shadow-lg hidden">
-                            <a href="{% url 'store_login' %}"
-                                class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200 rounded-t-lg">Login</a>
-                            <a href="{% url 'register' %}"
-                                class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-t border-gray-200 rounded-b-lg">Registrar</a>
+                        <!-- Login e Registro -->
+                        <div id="auth-menu-desktop" class="absolute top-full right-0 w-48 bg-gray-100 text-black rounded-lg shadow-lg hidden">
+                            <a href="{% url 'store_login' %}" class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200 rounded-t-lg">Login</a>
+                            <a href="{% url 'register' %}" class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-t border-gray-200 rounded-b-lg">Registrar</a>
                         </div>
                     </div>
                     {% endif %}
@@ -61,21 +56,53 @@
                     <a href="{% url 'cart' %}" class="relative">
                         <img id="cart-icon" class="w-6 inline-block" src="{% static 'images/cart.png' %}" alt="Cart Icon">
                         {% if cartItems > 0 %}
-                            <p id="cart-total" class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-center">
-                                {{ cartItems }}
-                            </p>
+                        <p id="cart-total" class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-center">{{ cartItems }}</p>
                         {% endif %}
-                    </a>                    
-                </div>
-                <!-- Menu mobile com ícones simplificados -->
-                <div class="sm:hidden flex space-x-2">
-                    <button id="auth-menu-toggle-mobile" class="focus:outline-none">
-                        <img src="{% static 'images/menu_icon.svg' %}" class="w-6 h-6" alt="User Icon">
-                    </button>
-                    <a href="{% url 'cart' %}">
-                        <img id="cart-icon-mobile" class="w-6 inline-block" src="{% static 'images/cart.png' %}"
-                            alt="Cart Icon">
                     </a>
+                </div>
+                <!-- Menu Mobile -->
+                <div class="relative sm:hidden">
+                    <button id="auth-menu-toggle-mobile" class="focus:outline-none">
+                        <img src="{% static 'images/menu_icon.svg' %}" class="w-16 mt-2" alt="User Icon">
+                    </button>
+                    <!-- Menu Mobile de Login, Registrar, Carrinho e Ícones de Categoria -->
+                    <div id="auth-menu-mobile" class="absolute top-full right-0 w-48 bg-gray-100 text-black rounded-lg shadow-lg hidden">
+                        <a href="{% url 'store_login' %}" class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">Login</a>
+                        <a href="{% url 'register' %}" class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">Registrar</a>
+                        <a href="{% url 'cart' %}" class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200 relative">
+                            Carrinho
+                            {% if cartItems > 0 %}
+                            <span class="absolute top-1 right-4 w-5 h-5 bg-red-500 text-white rounded-full text-center text-xs">{{ cartItems }}</span>
+                            {% endif %}
+                        </a>
+                        <!-- Ícones de Categoria no Menu Mobile -->
+                        <a href="{% url 'shared_space' %}" class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
+                            <img src="{% static 'images/coworking.svg' %}" class="w-5 h-5 mr-2" alt="">
+                            Espaços Compartilhados
+                        </a>
+                        <a href="{% url 'auditorium_spaces' %}" class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
+                            <img src="{% static 'images/cinema.svg' %}" class="w-5 h-5 mr-2" alt="">
+                            Auditórios
+                        </a>
+                        <a href="{% url 'office_spaces' %}" class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
+                            <img src="{% static 'images/trabalhador.svg' %}" class="w-5 h-5 mr-2" alt="">
+                            Escritórios
+                        </a>
+                        <a href="{% url 'store' %}" class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
+                            <img src="{% static 'images/promotion.svg' %}" class="w-5 h-5 mr-2" alt="">
+                            Ofertas
+                        </a>
+                        <a href="{% url 'about' %}" class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
+                            <img src="{% static 'images/about.svg' %}" class="w-5 h-5 mr-2" alt="">
+                            Sobre
+                        </a>
+                        {% if request.user.is_authenticated %}
+                        <a href="{% url 'create_room' %}" class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-t border-gray-200 rounded-b-lg">
+                            <img src="{% static 'images/house-add.svg' %}" class="w-5 h-5 mr-2" alt="">
+                            Novo
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </nav>
@@ -149,7 +176,7 @@
         const validarTransacaoUrl = "{% url 'validar_transacao' %}";
     </script>
     <script src="{% static 'js/cart.js' %}"></script>
-    <script src="{% static 'js/menuBar.js' %}"></script>    
+    <script src="{% static 'js/menuBar.js' %}"></script>
     <script src="{% static 'js/checkout.js' %}"></script>
     <script src="{% static 'js/verSenhaLogin.js' %}"></script>
 </body>
