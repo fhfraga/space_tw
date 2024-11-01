@@ -13,8 +13,14 @@
             </div>
             <div class="mb-6">
                 <label for="password" class="block text-black text-sm mb-2">Senha:</label>
-                <input type="password" id="password" name="password" required
-                    class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border">
+                <div class="relative">
+                    <input type="password" id="password" name="password" required
+                        class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border pr-10">
+                    <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600">
+                        <img id="cadeadoAberto" src="{% static 'images/cadeado_aberto.svg' %}" alt="Mostrar senha" class="w-5 h-5 hidden">
+                        <img id="cadeadoFechado" src="{% static 'images/cadeado_fechado.svg' %}" alt="Ocultar senha" class="w-5 h-5">
+                    </button>
+                </div>
             </div>
             <div class="flex items-center justify-between">
                 <button type="submit"
@@ -22,7 +28,6 @@
                     Entrar
                 </button>
             </div>
-            <!--"Ainda não tem uma conta? Clique aqui"-->
             <p class="text-center text-gray-500 mt-4">
                 Ainda não tem uma conta?
                 <a href="{% url 'register' %}" class="text-sky-900 font-bold hover:underline">

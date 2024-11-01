@@ -144,12 +144,13 @@
             <a href="{% url 'terms_of_service' %}" class="text-white underline">Termos de Serviço</a>
         </p>
     </footer>
-    <script src="{% static 'js/cart.js' %}"></script>
-    <script src="{% static 'js/menuBar.js' %}"></script>
     <script>
         const validarTransacaoUrl = "{% url 'validar_transacao' %}";
-    </script>    
+    </script>
+    <script src="{% static 'js/cart.js' %}"></script>
+    <script src="{% static 'js/menuBar.js' %}"></script>    
     <script src="{% static 'js/checkout.js' %}"></script>
+    <script src="{% static 'js/verSenhaLogin.js' %}"></script>
 </body>
 
 </html>
