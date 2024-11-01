@@ -5,7 +5,7 @@
 <head>
     <title>SpaceTW</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="{% static 'images/logo.svg' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/icons/logo.svg' %}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         var user = "{{ request.user }}";
@@ -23,38 +23,52 @@
                 <!-- Logo -->
                 <div class="flex items-center relative mt-5">
                     <a href="{% url 'store' %}">
-                        <img src="{% static 'images/logo.svg' %}" class="w-16 sm:w-20 -mb-14 drop-shadow-lg" alt="Logo">
+                        <img src="{% static 'images/icons/logo.svg' %}" class="w-16 sm:w-20 -mb-14 drop-shadow-lg" alt="Logo">
                     </a>
                 </div>
-                <!--Autenticação e Menu-->
+                <!-- Autenticação e Menu -->
                 <div class="flex items-center space-x-4 relative sm:flex hidden">
                     {% if request.user.is_authenticated %}
                     <p class="text-sm lg:text-base">Bem-vindo, <span class="text-yellow-500 font-bold">{{ request.user.username }}</span>!</p>
                     <div class="relative">
                         <button id="auth-menu-toggle-desktop" class="focus:outline-none">
-                            <img src="{% static 'images/menu_icon.svg' %}" class="w-16 mt-2" alt="User Icon">
+                            <img src="{% static 'images/icons/menu_icon.svg' %}" class="w-16 mt-2" alt="User Icon">
                         </button>
-                        <!--Sair-->
-                        <div id="auth-menu-desktop" class="absolute top-full right-0 w-48 bg-gray-100 text-black rounded-lg shadow-lg hidden">
-                            <a href="{% url 'store_logout' %}" class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200 rounded-t-lg">Sair</a>
+                        <!-- Sair -->
+                        <div id="auth-menu-desktop"
+                            class="absolute top-full right-0 w-48 bg-gray-100 text-black rounded-lg shadow-lg hidden">
+                            <a href="{% url 'store_logout' %}"
+                                class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-t border-gray-200 rounded-b-lg">
+                                <img src="{% static 'images/icons/logout_icon.svg' %}" class="w-5 h-5 mr-2" alt="Logout Icon">
+                                Logout
+                            </a>
                         </div>
                     </div>
                     {% else %}
                     <div class="relative">
-                        <!--Botão icone-->
+                        <!-- Menu icone -->
                         <button id="auth-menu-toggle-desktop" class="focus:outline-none">
-                            <img src="{% static 'images/menu_icon.svg' %}" class="w-16 mt-2" alt="User Icon">
+                            <img src="{% static 'images/icons/menu_icon.svg' %}" class="w-16 mt-2" alt="User Icon">
                         </button>
                         <!-- Login e Registro -->
-                        <div id="auth-menu-desktop" class="absolute top-full right-0 w-48 bg-gray-100 text-black rounded-lg shadow-lg hidden">
-                            <a href="{% url 'store_login' %}" class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200 rounded-t-lg">Login</a>
-                            <a href="{% url 'register' %}" class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-t border-gray-200 rounded-b-lg">Registrar</a>
+                        <div id="auth-menu-desktop"
+                            class="absolute top-full right-0 w-48 bg-gray-100 text-black rounded-lg shadow-lg hidden">
+                            <a href="{% url 'store_login' %}"
+                                class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200 rounded-t-lg">
+                                <img src="{% static 'images/icons/login_icon.svg' %}" class="w-5 h-5 mr-2" alt="Login Icon">
+                                Login
+                            </a>
+                            <a href="{% url 'register' %}"
+                                class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-t border-gray-200 rounded-b-lg">
+                                <img src="{% static 'images/icons/register.svg' %}" class="w-5 h-5 mr-2" alt="Register Icon">
+                                Registrar
+                            </a>
                         </div>
                     </div>
                     {% endif %}
                     <!-- Botão do Carrinho -->
                     <a href="{% url 'cart' %}" class="relative">
-                        <img id="cart-icon" class="w-6 inline-block" src="{% static 'images/cart.png' %}" alt="Cart Icon">
+                        <img id="cart-icon" class="w-15 h-10" src="{% static 'images/icons/cart_icon_white.svg' %}" alt="Cart Icon">
                         {% if cartItems > 0 %}
                         <p id="cart-total" class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-center">{{ cartItems }}</p>
                         {% endif %}
@@ -63,43 +77,66 @@
                 <!-- Menu Mobile -->
                 <div class="relative sm:hidden">
                     <button id="auth-menu-toggle-mobile" class="focus:outline-none">
-                        <img src="{% static 'images/menu_icon.svg' %}" class="w-16 mt-2" alt="User Icon">
+                        <img src="{% static 'images/icons/menu_icon.svg' %}" class="w-16 mt-2" alt="User Icon">
                     </button>
-                    <!-- Menu Mobile de Login, Registrar, Carrinho e Ícones de Categoria -->
-                    <div id="auth-menu-mobile" class="absolute top-full right-0 w-48 bg-gray-100 text-black rounded-lg shadow-lg hidden">
-                        <a href="{% url 'store_login' %}" class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">Login</a>
-                        <a href="{% url 'register' %}" class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">Registrar</a>
-                        <a href="{% url 'cart' %}" class="text-sky-800 font-bold block px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200 relative">
-                            Carrinho
-                            {% if cartItems > 0 %}
-                            <span class="absolute top-1 right-4 w-5 h-5 bg-red-500 text-white rounded-full text-center text-xs">{{ cartItems }}</span>
-                            {% endif %}
+                    <!-- Menu Mobile -->
+                    <div id="auth-menu-mobile"
+                        class="absolute top-full right-0 w-48 bg-gray-100 text-black rounded-lg shadow-lg hidden">
+
+                        {% if request.user.is_authenticated %}
+                        <!-- Mensagem de Boas-Vindas -->
+                        <p class="text-sky-800 font-bold px-4 py-2">
+                            Bem-vindo, <span class="text-yellow-500">{{ request.user.username }}</span>!
+                        </p>
+                        {% else %}
+                        <!-- Opções de Login e Registro -->
+                        <a href="{% url 'store_login' %}"
+                            class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
+                            <img src="{% static 'images/icons/login_icon.svg' %}" class="w-5 h-5 mr-2" alt="Login Icon">
+                            Login
                         </a>
+                        <a href="{% url 'register' %}"
+                            class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-t border-gray-200">
+                            <img src="{% static 'images/icons/register.svg' %}" class="w-5 h-5 mr-2" alt="Register Icon">
+                            Registrar
+                        </a>
+                        {% endif %}
                         <!-- Ícones de Categoria no Menu Mobile -->
-                        <a href="{% url 'shared_space' %}" class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
-                            <img src="{% static 'images/coworking.svg' %}" class="w-5 h-5 mr-2" alt="">
+                        <a href="{% url 'shared_space' %}"
+                            class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-t border-b border-gray-200">
+                            <img src="{% static 'images/icons/coworking.svg' %}" class="w-5 h-5 mr-2" alt="">
                             Espaços Compartilhados
                         </a>
-                        <a href="{% url 'auditorium_spaces' %}" class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
-                            <img src="{% static 'images/cinema.svg' %}" class="w-5 h-5 mr-2" alt="">
+                        <a href="{% url 'auditorium_spaces' %}"
+                            class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
+                            <img src="{% static 'images/icons/cinema.svg' %}" class="w-5 h-5 mr-2" alt="">
                             Auditórios
                         </a>
-                        <a href="{% url 'office_spaces' %}" class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
-                            <img src="{% static 'images/trabalhador.svg' %}" class="w-5 h-5 mr-2" alt="">
+                        <a href="{% url 'office_spaces' %}"
+                            class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
+                            <img src="{% static 'images/icons/office.svg' %}" class="w-5 h-5 mr-2" alt="">
                             Escritórios
                         </a>
-                        <a href="{% url 'store' %}" class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
-                            <img src="{% static 'images/promotion.svg' %}" class="w-5 h-5 mr-2" alt="">
+                        <a href="{% url 'store' %}"
+                            class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
+                            <img src="{% static 'images/icons/promotion.svg' %}" class="w-5 h-5 mr-2" alt="">
                             Ofertas
                         </a>
-                        <a href="{% url 'about' %}" class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
-                            <img src="{% static 'images/about.svg' %}" class="w-5 h-5 mr-2" alt="">
+                        <a href="{% url 'about' %}"
+                            class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-b border-gray-200">
+                            <img src="{% static 'images/icons/about.svg' %}" class="w-5 h-5 mr-2" alt="">
                             Sobre
                         </a>
                         {% if request.user.is_authenticated %}
-                        <a href="{% url 'create_room' %}" class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-t border-gray-200 rounded-b-lg">
-                            <img src="{% static 'images/house-add.svg' %}" class="w-5 h-5 mr-2" alt="">
+                        <a href="{% url 'create_room' %}"
+                            class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-t border-gray-200">
+                            <img src="{% static 'images/icons/house-add.svg' %}" class="w-5 h-5 mr-2" alt="">
                             Novo
+                        </a>
+                        <a href="{% url 'store_logout' %}"
+                            class="text-sky-800 font-bold flex items-center px-4 py-2 hover:bg-sky-950 hover:text-white hover:border border-t border-gray-200 rounded-b-lg">
+                            <img src="{% static 'images/icons/logout_icon.svg' %}" class="w-5 h-5 mr-2" alt="Logout Icon">
+                            Logout
                         </a>
                         {% endif %}
                     </div>
@@ -116,7 +153,7 @@
                         <input type="text" name="query" placeholder="O que você procura?"
                             class="w-full px-4 py-2 sm:py-4 text-black rounded-l-full focus:outline-none text-lg">
                         <button type="submit" class="bg-sky-950 p-2 rounded-full mr-4">
-                            <img src="{% static 'images/lupa.svg' %}" class="w-6 h-6" alt="Lupa">
+                            <img src="{% static 'images/icons/lupa.svg' %}" class="w-6 h-6" alt="Lupa">
                         </button>
                     </form>
                 </div>
@@ -126,33 +163,33 @@
                 <div class="flex justify-evenly flex-wrap gap-4">
                     <a href="{% url 'shared_space' %}"
                         class="text-center hover:scale-125 transition duration-300 w-24 sm:w-36 mb-4">
-                        <img src="{% static 'images/coworking.svg' %}" class="w-8 sm:w-9 mx-auto" alt="">
+                        <img src="{% static 'images/icons/coworking.svg' %}" class="w-8 sm:w-9 mx-auto" alt="">
                         <h6 class="text-xs sm:text-sm text-gray-500 mt-2">Espaços<br>Compartilhados</h6>
                     </a>
                     <a href="{% url 'auditorium_spaces' %}"
                         class="text-center hover:scale-125 transition duration-300 w-24 sm:w-36 mb-4">
-                        <img src="{% static 'images/cinema.svg' %}" class="w-8 sm:w-9 mx-auto" alt="">
+                        <img src="{% static 'images/icons/cinema.svg' %}" class="w-8 sm:w-9 mx-auto" alt="">
                         <h6 class="text-xs sm:text-sm text-gray-500 mt-2">Auditórios</h6>
                     </a>
                     <a href="{% url 'office_spaces' %}"
                         class="text-center hover:scale-125 transition duration-300 w-24 sm:w-36 mb-4">
-                        <img src="{% static 'images/trabalhador.svg' %}" class="w-8 sm:w-9 mx-auto" alt="">
+                        <img src="{% static 'images/icons/office.svg' %}" class="w-8 sm:w-9 mx-auto" alt="">
                         <h6 class="text-xs sm:text-sm text-gray-500 mt-2">Escritórios</h6>
                     </a>
                     <a href="{% url 'store' %}"
                         class="text-center hover:scale-125 transition duration-300 w-24 sm:w-36 mb-4">
-                        <img src="{% static 'images/promotion.svg' %}" class="w-8 sm:w-9 mx-auto" alt="">
+                        <img src="{% static 'images/icons/promotion.svg' %}" class="w-8 sm:w-9 mx-auto" alt="">
                         <h6 class="text-xs sm:text-sm text-gray-500 mt-2">Ofertas</h6>
                     </a>
                     <a href="{% url 'about' %}"
                         class="text-center hover:scale-125 transition duration-300 w-24 sm:w-36 mb-4">
-                        <img src="{% static 'images/about.svg' %}" class="w-8 sm:w-9 mx-auto" alt="">
+                        <img src="{% static 'images/icons/about.svg' %}" class="w-8 sm:w-9 mx-auto" alt="">
                         <h6 class="text-xs sm:text-sm text-gray-500 mt-2">Sobre</h6>
                     </a>
                     {% if request.user.is_authenticated %}
                     <a href="{% url 'create_room' %}"
                         class="text-center hover:scale-125 transition duration-300 w-24 sm:w-36 mb-4">
-                        <img src="{% static 'images/house-add.svg' %}" class="w-8 sm:w-9 mx-auto" alt="">
+                        <img src="{% static 'images/icons/house-add.svg' %}" class="w-8 sm:w-9 mx-auto" alt="">
                         <h6 class="text-xs sm:text-sm text-gray-500 mt-2">Novo</h6>
                     </a>
                     {% endif %}
