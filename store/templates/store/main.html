@@ -93,10 +93,10 @@
 				<figure>
 					<a href="{% url 'store' %}"><img src="{% static 'images/promotion.svg' %}" alt=""><h6>OFERTAS</h6></a>
 				</figure>
-				<figure></figure>
+				<figure>
 					<a href="{% url 'about' %}"><img src="{% static 'images/about.svg' %}" alt=""><h6>SOBRE</h6></a>
 				</figure>
-				<figure></figure>
+				<figure>
 					{% if request.user.is_authenticated %}
 					<a href="{% url 'create_room' %}">
 						<img src="{% static 'images/house-add.svg' %}" alt="">
@@ -116,6 +116,7 @@
 			<a href="{% url 'store_logout' %}" class="btn btn-warning">Logout</a>
 		{% else %}
 			<a href="{% url 'store_login' %}" class="btn btn-warning">Login</a>
+			<a href="{% url 'register' %}" class="btn btn-success ml-2">Registrar</a>
 		{% endif %}
 		
 		<a href="{% url 'cart' %}">

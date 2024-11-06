@@ -19,6 +19,16 @@ p, ul{color: #020202;}
 	padding: 10px;
 }
 
+.navbar {
+    height: 100px; 
+    padding: 10px 20px;
+}
+
+.navbar a {
+    font-size: 14px; 
+    padding: 5px 10px;
+}
+
 .thumbnail{
 	width: 100%;
 	height: 200px;
@@ -59,7 +69,7 @@ p, ul{color: #020202;}
 
 
 .btn {
-    border-radius: 0;
+    border-radius: 15px;
     background-color: #d3d3d3;
     color: #020202;
     text-transform: uppercase;
@@ -118,17 +128,17 @@ p, ul{color: #020202;}
 
 .categoria {
     display: flex;
-    justify-content: center; /* Centraliza os itens horizontalmente */
-    align-items: center; /* Centraliza os itens verticalmente */
-    flex-wrap: wrap; /* Quebra linha conforme necessário */
+    justify-content: center; 
+    align-items: center; 
+    flex-wrap: wrap; 
     margin-top: 50px;
     width: 100%;
 }
 
 .imagem_categoria {
     display: flex;
-    justify-content: center; /* Centraliza os itens horizontalmente */
-    align-items: center; /* Centraliza os itens verticalmente */
+    justify-content: center; 
+    align-items: center; 
     width: 35%;
     margin: 5px;
 }
@@ -149,7 +159,7 @@ p, ul{color: #020202;}
 }
 
 .categoria figure:hover {
-    transform: scale(1.2); /* Correção do erro: 'scale' alterado para 'transform' */
+    transform: scale(1.2);
     transition: 0.3s ease-in-out;
 }
 
@@ -160,9 +170,9 @@ p, ul{color: #020202;}
 
 .seach_bar{
     color: #b4b5b8;
-    height: 65px;
+    height: 45px;
     background-color: white;
-    width: 60%;
+    width: 35%;
     border-radius: 50px;
     border: solid 1px;
     border-color: #b4b5b8;
@@ -182,8 +192,8 @@ p, ul{color: #020202;}
     align-items: center;
     justify-content: center;
     margin-right: 20px;
-    width: 60%;
-    height: 65px;
+    width: 90%;
+    height: 30px;
 }
 
 .barra input{
@@ -201,11 +211,11 @@ p, ul{color: #020202;}
     align-items: center;
     justify-content: center;
     display: flex;
-    width: 60px;
+    width: 63px;
     height: 47px;
     background-color: #061f36;
     border-radius: 100%;
-    margin-right: 30px;
+    margin-right: -2px;
 }
 
 .lupa img{
@@ -244,10 +254,21 @@ p, ul{color: #020202;}
 	color: #061f36
 }
 
+
+
+footer {
+    height: 100px; 
+    padding: 5px 20px; 
+    font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
+    color: white;
+}
+
 footer h6{
     font-size: 16px;
-	font-family: 'Times New Roman', Times, serif;
+    font-family: 'Times New Roman', Times, serif;
     color: white;
+	
 }
 
 .text-white {
@@ -255,3 +276,5 @@ footer h6{
 	font-family: 'Times New Roman', Times, serif;
     color: white;
 }
+
+

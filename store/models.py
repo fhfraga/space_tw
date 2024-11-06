@@ -18,6 +18,7 @@ class Product(models.Model):
     image = models.ImageField(null=True, blank=True)
     link = models.CharField(max_length=200, null=True)
     on_sale = models.BooleanField(default=False)
+    is_rented = models.BooleanField(default=False) 
 
     SPACE_TYPES = [
         ('compartilhado', 'Espaço Compartilhado'),
@@ -26,6 +27,8 @@ class Product(models.Model):
     ]
     space_type = models.CharField(max_length=20, choices=SPACE_TYPES, default='escritorio')
     features = models.CharField(max_length=255, default='Nenhuma', blank=True)
+    available_from = models.DateField(null=True, blank=True)
+    available_to = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.name
