@@ -27,17 +27,21 @@ def store(request):
     )
     return render(request, "store/store.html", {"products": products})
 
-
 def cart(request):
+    if request.user.is_authenticated:
+        try:
+            customer = request.user.customer
+        except Customer.DoesNotExist:
+            customer = Customer.objects.create(user=request.user)
+
     data = cartData(request)
 
-    cartItems = data["cartItems"]
-    order = data["order"]
-    items = data["items"]
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
 
-    context = {"items": items, "order": order, "cartItems": cartItems}
-    return render(request, "store/cart.html", context)
-
+    context = {'items': items, 'order': order, 'cartItems': cartItems}
+    return render(request, 'store/cart.html', context)
 
 def checkout(request):
     data = cartData(request)
@@ -45,9 +49,15 @@ def checkout(request):
     cartItems = data["cartItems"]
     order = data["order"]
     items = data["items"]
-
     context = {"items": items, "order": order, "cartItems": cartItems}
     return render(request, "store/checkout.html", context)
+
+def updateItem(request):
+	data = json.loads(request.body)
+	productId = data['productId']
+	action = data['action']
+	print('Action:', action)
+	print('Product:', productId)
 
 
 def updateItem(request):
@@ -75,13 +85,6 @@ def updateItem(request):
         orderItem.quantity = orderItem.quantity - 1
 
     orderItem.save()
-
-    if orderItem.quantity <= 0:
-        orderItem.delete()
-
-    return JsonResponse(
-        {"status": "added", "message": "Produto adicionado ao carrinho."}, safe=False
-    )
 
 
 def processOrder(request):
@@ -117,26 +120,20 @@ def processOrder(request):
 def about(request):
     return render(request, "store/about.html")
 
-
 def sala_aracatiba(request):
     return render(request, "store/rooms/sala_1.html")
-
 
 def sala_centro(request):
     return render(request, "store/rooms/sala_2.html")
 
-
 def sala_itapeba(request):
     return render(request, "store/rooms/sala_3.html")
 
-
 def auditorio_inoa(request):
-    return render(request, "store/rooms/auditorio_1.html")
-
+    return render(request, 'store/rooms/auditorio_1.html')  
 
 def finish(request):
-    return render(request, "store/finish.html")
-
+    return render(request, 'store/finish.html') 
 
 def shared_space(request):
     shared_space_products = Product.objects.filter(
